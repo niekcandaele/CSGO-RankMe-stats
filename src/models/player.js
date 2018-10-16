@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('rankme', {
+  return sequelize.define(process.env.MYSQL_TABLE, {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
