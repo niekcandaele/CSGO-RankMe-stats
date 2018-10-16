@@ -321,7 +321,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'rankme',
+    tableName: process.env.MYSQL_TABLE,
     timestamps: false,
   });
 };
