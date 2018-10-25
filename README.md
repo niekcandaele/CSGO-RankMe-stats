@@ -16,12 +16,14 @@ Shows the top players for a specific field. You can reverse the ordering by usin
 
 ## Installation
 
-You will need a MySQL database that is storing the statistics, this bot does not support SQLite (yet).
+You will need a MySQL database that is storing the statistics, this bot does not support SQLite (yet). Atleast NodeJs v8.x is recommended. 
 
 1. Create a Discord bot via the [Discord developer page](https://discordapp.com/developers/applications/)
-2. Copy `.env.example` to `.env`
-3. Fill in the database connection info & Discord bot token
-4. `node src/index.js`
+2. Clone this repo to your machine
+3. Run `npm install` to install the dependencies
+4. Copy `.env.example` to `.env`
+5. Fill in the database connection info & Discord bot token
+6. `node src/index.js`
 
 ## Examples
 
