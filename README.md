@@ -16,7 +16,7 @@ Shows the top players for a specific field. You can reverse the ordering by usin
 
 ## Installation
 
-You will need a MySQL database that is storing the statistics, this bot does not support SQLite.
+You will need a MySQL database that is storing the statistics, this bot does not support SQLite (yet).
 
 1. Create a Discord bot via the [Discord developer page](https://discordapp.com/developers/applications/)
 2. Copy `.env.example` to `.env`
