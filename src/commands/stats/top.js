@@ -1,8 +1,6 @@
 const Commando = require('discord.js-commando');
 const RichEmbed = require('discord.js').RichEmbed;
 
-let possibleTypes = ['score', 'kills', 'deaths', 'assists', 'suicides', 'tk', 'shots', 'hits', 'headshots', 'rounds_tr', 'rounds_ct', 'knife', 'glock', 'hkp2000', `usp_silencer`, `p250`, `deagle`, `elite`, `fiveseven`, `tec9`, `cz75a`, `revolver`, `nova`, `xm1014`, `mag7`, `sawedoff`, `bizon`, `mac10`, `mp9`, `mp7`, `ump45`, `p90`, `galilar`, `ak47`, `scar20`, `famas`, `m4a1`, `m4a1_silencer`, `aug`, `ssg08`, `sg556`, `awp`, `g3sg1`, `m249`, `negev`, `hegrenade`, `flashbang`, `smokegrenade`, `inferno`, `decoy`, `taser`, `mp5sd`, `head`, `chest`, `stomach`, `left_arm`, `right_arm`, `left_leg`, `right_leg`, `c4_planted`, `c4_exploded`, `c4_defused`, `ct_win`, `tr_win`, `hostages_rescued`, `vip_killed`, `vip_escaped`, `vip_played`, `mvp`, `damage`, `match_win`, `match_draw`, `match_lose`]
-
 class Top extends Commando.Command {
     constructor(client) {
         super(client, {
@@ -18,7 +16,7 @@ class Top extends Commando.Command {
                 default: 'score',
                 type: 'string',
                 prompt: "Please specify a valid type.",
-                oneOf: possibleTypes.concat(['list'])
+                oneOf: client.dataFields.concat(['list'])
             }, {
                 key: 'amount',
                 default: 10,
@@ -33,7 +31,7 @@ class Top extends Commando.Command {
     async run(msg, args) {
 
         if (args.type === "list") {
-            return msg.channel.send(`**There are ${possibleTypes.length} possible types!**\n\n${possibleTypes.join(', ')}`)
+            return msg.channel.send(`**There are ${this.client.dataFields.length} possible types!**\n\n${this.client.dataFields.join(', ')}`)
         }
 
         let orderType = "DESC"

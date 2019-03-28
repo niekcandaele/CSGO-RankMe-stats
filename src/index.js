@@ -1,6 +1,9 @@
 require('dotenv').config();
 const config = require('../config.json');
 
+// Relevant data fields, used to enumerate
+const dataFields = ['score', 'kills', 'deaths', 'assists', 'suicides', 'tk', 'shots', 'hits', 'headshots', 'rounds_tr', 'rounds_ct', 'knife', 'glock', 'hkp2000', `usp_silencer`, `p250`, `deagle`, `elite`, `fiveseven`, `tec9`, `cz75a`, `revolver`, `nova`, `xm1014`, `mag7`, `sawedoff`, `bizon`, `mac10`, `mp9`, `mp7`, `ump45`, `p90`, `galilar`, `ak47`, `scar20`, `famas`, `m4a1`, `m4a1_silencer`, `aug`, `ssg08`, `sg556`, `awp`, `g3sg1`, `m249`, `negev`, `hegrenade`, `flashbang`, `smokegrenade`, `inferno`, `decoy`, `taser`, `mp5sd`, `head`, `chest`, `stomach`, `left_arm`, `right_arm`, `left_leg`, `right_leg`, `c4_planted`, `c4_exploded`, `c4_defused`, `ct_win`, `tr_win`, `hostages_rescued`, `vip_killed`, `vip_escaped`, `vip_played`, `mvp`, `damage`, `match_win`, `match_draw`, `match_lose`]
+
 /*
 ______  ___ _____ ___ ______  ___  _____ _____ 
 |  _  \/ _ \_   _/ _ \| ___ \/ _ \/  ___|  ___|
@@ -23,6 +26,7 @@ const sequelize = new Sequelize(process.env.MYSQL_DB, process.env.MYSQL_USER, pr
         acquire: 30000,
         idle: 10000
     },
+    logging: false,
 });
 
 // Test to make sure we can connect to the database. If not, it will exit the process.
@@ -76,6 +80,8 @@ if (config.discordBot.enabled) {
         sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
     ).catch(e => console.log(e));
 
+    client.dataFields = dataFields;
+
     client.registry
         .registerGroups([
             ['stats', 'Statistics about CSGO'],
@@ -89,4 +95,5 @@ if (config.discordBot.enabled) {
     client.Player = Player;
     client.sequelize = sequelize;
     client.config = config;
+
 }
