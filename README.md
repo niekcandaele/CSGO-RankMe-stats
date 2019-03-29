@@ -1,8 +1,12 @@
-# CSGO RankMe stats Discord bot
+# CSGO RankMe stats
 
-A Discord bot that shows statistics from [Kento RankMe plugin](https://github.com/rogeraabbccdd/Kento-Rankme).
+This application shows statistics from [Kento RankMe plugin](https://github.com/rogeraabbccdd/Kento-Rankme)
 
-## Commands
+This includes:
+ - A Discord bot.
+ - A webserver
+
+## Discord commands
 
 - Stats
 
@@ -13,6 +17,10 @@ Calculates special fields for all players.
 Shows the top players for a specific field. You can reverse the ordering by using the command alias `low` instead of `top`
 
 `top list` will output a list of all fields that can be sorted against.
+
+- `Lookup <steamID>`
+
+Lookup a players stats by steam ID
 
 ## Installation
 
