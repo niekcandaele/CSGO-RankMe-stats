@@ -97,3 +97,66 @@ if (config.discordBot.enabled) {
     client.config = config;
 
 }
+
+/*
+__          __  _                                  
+\ \        / / | |                                 
+ \ \  /\  / /__| |__  ___  ___ _ ____   _____ _ __ 
+  \ \/  \/ / _ \ '_ \/ __|/ _ \ '__\ \ / / _ \ '__|
+   \  /\  /  __/ |_) \__ \  __/ |   \ V /  __/ |   
+    \/  \/ \___|_.__/|___/\___|_|    \_/ \___|_|   
+*/
+
+if (config.webserver.enabled) {
+
+    if (!config.webserver.port) {
+        throw new Error('Must provide a port in config when the webserver is enabled');
+    }
+
+    const express = require('express');
+    const path = require('path');
+    const app = express();
+    const port = config.webserver.port;
+
+    app.set('view engine', 'ejs');
+
+    app.get('/', function (req, res) {
+        res.render('index', {
+            name: config.serverName
+        });
+    });
+
+    app.get('/player/:id', function (req, res) {
+        res.render('profile', {
+            name: config.serverName
+        });
+    });
+
+    app.get('/api/overview', async function (req, res) {
+        const data = await Player.findAll({
+            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots'],
+            limit: 1000,
+            order: [
+                ['score', 'DESC']
+            ]
+        });
+        res.json(data);
+        return res.end();
+    });
+
+    app.get('/api/player/:id', async function (req, res) {
+        const data = await Player.findOne({
+            attributes: {
+                exclude: 'lastip'
+            },
+            where: {
+                id: req.params.id
+            }
+        });
+        res.json(data);
+        return res.end();
+    });
+
+    app.use('/static', express.static(path.resolve(__dirname, '../static')));
+    app.listen(port, () => console.log(`Webserver listening on port ${port}!`))
+}
