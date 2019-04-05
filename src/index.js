@@ -1,3 +1,4 @@
+const HistoricalDataClass = require('./classes/historicalData');
 require('dotenv').config();
 const config = require('../config.json');
 
@@ -26,7 +27,7 @@ const sequelize = new Sequelize(process.env.MYSQL_DB, process.env.MYSQL_USER, pr
         acquire: 30000,
         idle: 10000
     },
-    logging: false,
+    logging: config.logSQL,
 });
 
 // Test to make sure we can connect to the database. If not, it will exit the process.
@@ -36,13 +37,23 @@ sequelize
         console.log('Database connection has been established successfully.');
     });
 
+
 // Initiate the player model
 const Player = require("./models/player")(sequelize, Sequelize);
+// Initialize the historicalData model
+const HistoricalData = require('./models/historicalData')(sequelize, Sequelize);
+
+Player.sync().then(() => {
+    console.log('Synced Player model');
+})
 
 // Bind models to object
 const Models = {
-    Player: Player
+    Player,
+    HistoricalData
 }
+
+global.models = Models;
 
 /*
 ______ _____ _____ _____ _________________ 
@@ -95,16 +106,16 @@ if (config.discordBot.enabled) {
     client.Player = Player;
     client.sequelize = sequelize;
     client.config = config;
-
+    global.client = client;
 }
 
 /*
 __          __  _                                  
 \ \        / / | |                                 
- \ \  /\  / /__| |__  ___  ___ _ ____   _____ _ __ 
-  \ \/  \/ / _ \ '_ \/ __|/ _ \ '__\ \ / / _ \ '__|
-   \  /\  /  __/ |_) \__ \  __/ |   \ V /  __/ |   
-    \/  \/ \___|_.__/|___/\___|_|    \_/ \___|_|   
+\ \  /\  / /__| |__  ___  ___ _ ____   _____ _ __ 
+\ \/  \/ / _ \ '_ \/ __|/ _ \ '__\ \ / / _ \ '__|
+\  /\  /  __/ |_) \__ \  __/ |   \ V /  __/ |   
+\/  \/ \___|_.__/|___/\___|_|    \_/ \___|_|   
 */
 
 if (config.webserver.enabled) {
@@ -159,4 +170,13 @@ if (config.webserver.enabled) {
 
     app.use('/static', express.static(path.resolve(__dirname, '../static')));
     app.listen(port, () => console.log(`Webserver listening on port ${port}!`))
+    global.app = app;
+}
+
+if (config.historicalData.enabled) {
+    // Start the historicalData class
+    HistoricalData.sync().then(() => {
+        console.log('Synced HistoricalData model');
+        const historicalDataHook = new HistoricalDataClass();
+    })
 }
