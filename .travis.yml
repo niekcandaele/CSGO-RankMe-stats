@@ -1,0 +1,41 @@
+language: node_js
+node_js:
+  - "lts/*"
+
+before_script:
+  - npm install
+
+script:
+  - npm test
+  - npm run test:cover
+
+after_success:
+  - npm run docs
+  - npm pack
+
+after_script: "cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js"
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    local_dir: docs/
+    github_token: $GITHUB_TOKEN
+    on:
+      all_branches: true
+      tags: true
+      repo: niekcandaele/CSGO-RankMe-stats
+
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: "7daystodie-api-wrapper-*.tgz"
+    skip_cleanup: true
+    on:
+      tags: true
+      all_branches: true
+      repo: niekcandaele/CSGO-RankMe-stats
+
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha test/**/*.test.js --exit",
-    "docs": "jsdoc src -r -t node_modules/docdash"
+    "docs": "jsdoc src -r -t node_modules/docdash",
+    "test:cover": "nyc --report-dir ./coverage --reporter=html --reporter=text-summary node_modules/mocha/bin/_mocha --exit"
   },
   "author": "",
   "license": "ISC",
