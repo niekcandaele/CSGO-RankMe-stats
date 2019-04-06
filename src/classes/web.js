@@ -2,6 +2,7 @@ const config = require('../../config.json');
 const express = require('express');
 const path = require('path');
 const port = config.webserver.port;
+const _ = require('lodash');
 
 /**
  * Express Request Object
@@ -57,7 +58,15 @@ class Web {
      * @param {external:Request} req 
      * @param {external:Response} res 
      */
-    playerIdRoute(req, res) {
+    async playerIdRoute(req, res) {
+        const player = await global.models.Player.findByPk(req.params.id);
+
+        if (_.isNull(player)) {
+            res.status(404)
+                .send('No player with that ID found.');
+            return res.end();
+        }
+
         res.render('profile', {
             name: config.serverName
         });
@@ -94,6 +103,13 @@ class Web {
                 id: req.params.id
             }
         });
+
+        if (_.isNull(data)) {
+            res.status(404)
+                .send('No player with that ID found.');
+            return res.end();
+        }
+
         res.json(data);
         return res.end();
     }

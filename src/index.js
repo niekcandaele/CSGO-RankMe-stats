@@ -1,5 +1,5 @@
-const HistoricalDataClass = require('./classes/historicalData');
 require('dotenv').config();
+const HistoricalDataClass = require('./classes/historicalData');
 const config = require('../config.json');
 
 // Relevant data fields, used to enumerate
@@ -81,9 +81,9 @@ __          __  _
 
 if (config.webserver.enabled) {
     const Web = require('./classes/web');
-    const app = new Web();
+    const webserver = new Web();
 
-    global.app = app;
+    global.app = webserver.app;
 }
 
 /*
