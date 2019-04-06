@@ -4,7 +4,8 @@
   "description": "Integrates RankMe data in MySQL to Discord",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "jsdoc src -r -t node_modules/docdash"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +20,12 @@
     "sequelize": "^4.39.0",
     "sqlite": "^3.0.0",
     "steamid": "^1.1.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.3",
+    "docdash": "^1.1.0",
+    "jsdoc": "^3.5.5",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0"
   }
 }
