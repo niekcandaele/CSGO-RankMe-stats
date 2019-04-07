@@ -67,7 +67,7 @@ ______ _____ _____ _____ _________________
 
 if (config.discordBot.enabled) {
     const DiscordBot = require('./classes/discordBot');
-    global.client = new DiscordBot();
+    global.discordBot = new DiscordBot();
 }
 
 /*

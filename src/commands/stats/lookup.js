@@ -90,9 +90,7 @@ class Lookup extends Commando.Command {
 
         const dateEnded = Date.now();
         resultEmbed.setFooter(`Took ${dateEnded - dateStarted} ms to get this data!`);
-        responseMessage.edit('', resultEmbed);
-        return;
-
+        return responseMessage.edit('', resultEmbed);
     }
 
 }

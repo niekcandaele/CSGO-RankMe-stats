@@ -184,7 +184,7 @@ class Stats extends Commando.Command {
         resultEmbed.addField(`:zap: Most zeus kills`, generateTopThreeString(topTaserKills, "taser", this.client.config), true);
         resultEmbed.addField(`:crown: Most MVPs`, generateTopThreeString(topMvp, "mvp", this.client.config), true);
 
-        await msg.channel.send(resultEmbed);
+        return msg.channel.send(resultEmbed);
 
     }
 
