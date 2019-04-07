@@ -1,7 +1,12 @@
 language: node_js
 node_js:
   - "lts/*"
+services:
+  - mysql
 
+before_install:
+  - mysql -e 'CREATE DATABASE csgo;'
+  
 before_script:
   - npm install
 
