@@ -75,5 +75,21 @@ describe('Discord bot', function () {
                 }
             });
         });
+
+        it('Validates argument correctly', function () {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const lookupInstance = new Lookup(global.discordBot.client);
+                    expect(lookupInstance.validateArgument('76561198028175941')).to.be.true;
+                    expect(lookupInstance.validateArgument('STEAM_0:1:33955106')).to.be.true;
+                    expect(lookupInstance.validateArgument('STEAM_1:1:33955106')).to.be.true;
+                    expect(lookupInstance.validateArgument('[U:1:67910213]')).to.be.true;
+                    expect(lookupInstance.validateArgument('notavalidID')).to.be.false;
+                    return resolve();
+                } catch (error) {
+                    return reject(error)
+                }
+            });
+        })
     })
 })
