@@ -63,12 +63,17 @@ describe('Discord bot', function () {
         it('Sends a message', function () {
             return new Promise(async (resolve, reject) => {
                 try {
+                    const player = await mock.player();
                     const lookupInstance = new Lookup(global.discordBot.client);
                     const msg = await global.discordBot.client.channels.get(process.env.TEST_DISCORD_CHANNEL).send(global.discordBot.client.commandPrefix + 'lookup 76561198028175941');
-                    const resultMsg = await lookupInstance.run(msg, {
-                        steamId: '76561198028175941',
+                    let resultMsg = await lookupInstance.run(msg, {
+                        steamId: player.steam,
                     });
                     expect(resultMsg).to.be.instanceOf(Message)
+                    resultMsg = await lookupInstance.run(msg, {
+                        steamId: player.steam.replace('6', '4'),
+                    });
+                    expect(resultMsg).to.be.instanceOf(Message);
                     return resolve();
                 } catch (error) {
                     return reject(error)
