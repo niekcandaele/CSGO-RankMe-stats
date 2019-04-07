@@ -55,24 +55,6 @@ describe('Discord bot', function () {
                 }
             });
         });
-
-        it('Handles amount argument correctly', function () {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const topInstance = new Top(global.discordBot.client);
-                    const msg = await global.discordBot.client.channels.get(process.env.TEST_DISCORD_CHANNEL).send(global.discordBot.client.commandPrefix + 'top ak47 10');
-                    const resultMsg = await topInstance.run(msg, {
-                        type: 'score',
-                        amount: 15
-                    });
-                    expect(resultMsg.embeds[0].type).to.be.eq('rich');
-                    expect(resultMsg.embeds[0].description.split('.')).to.have.length(16)
-                    return resolve();
-                } catch (error) {
-                    return reject(error)
-                }
-            });
-        });
     });
 
 
