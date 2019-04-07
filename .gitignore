@@ -81,3 +81,5 @@ typings/
 
 .env
 *.sqlite3
+
+out/
