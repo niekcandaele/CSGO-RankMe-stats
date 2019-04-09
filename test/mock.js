@@ -3,7 +3,7 @@ const faker = require('faker');
 module.exports = {
     async player() {
         const data = await global.models.Player.create({
-            steam: 'STEAM_1:1:33944206',
+            steam: 'STEAM_1:1:' + faker.random.number(0, 33999999),
             name: faker.name.firstName(),
             lastip: faker.internet.ip(),
             score: faker.random.number(),

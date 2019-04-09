@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const port = config.webserver.port;
 const _ = require('lodash');
+const Op = require('sequelize').Op
 
 /**
  * Express Request Object
@@ -37,6 +38,7 @@ class Web {
         this.app.get('/player/:id', this.playerIdRoute);
         this.app.get('/api/overview', this.ApiOverviewRoute);
         this.app.get('/api/player/:id', this.ApiPlayerInfoRoute);
+        this.app.get('/api/historicalData', this.getHistoricalDataRoute);
 
         this.app.use('/static', express.static(path.resolve(__dirname, '../../static')));
         this.app.listen(port, () => console.log(`Webserver listening on port ${port}!`))
@@ -109,6 +111,41 @@ class Web {
                 .send('No player with that ID found.');
             return res.end();
         }
+
+        res.json(data);
+        return res.end();
+    }
+
+    /**
+     * 
+     * @param {external:Request} req 
+     * @param {external:Response} res 
+     */
+    async getHistoricalDataRoute(req, res) {
+
+        if (_.isUndefined(req.query.endDate)) {
+            req.query.endDate = Date.now();
+        }
+
+        if (_.isUndefined(req.query.startDate)) {
+            // Default to week-old data
+            req.query.startDate = Date.now() - 604800000;
+        }
+
+        const startDate = new Date(req.query.startDate);
+        const endDate = new Date(req.query.endDate);
+        const data = await global.models.HistoricalData.findAll({
+            where: {
+                [Op.and]: {
+                    createdAt: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
+                    },
+                    steam: req.query.steam,
+                }
+            },
+            raw: true,
+        });
 
         res.json(data);
         return res.end();
