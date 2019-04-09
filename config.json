@@ -14,10 +14,9 @@
     },
     "historicalData": {
         "enabled": true,
-        "intervalMs": 3600000,
+        "intervalCron": "* * * * *",
         "keepDataForMs": 604800000,
         "tableName": "historicalData",
-        "lastConnectDifferenceBeforeCollectingData": 604800000,
         "deleteTimeDifference": 2678400000
     }
 }

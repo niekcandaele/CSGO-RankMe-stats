@@ -1,6 +1,7 @@
 const config = require('../../config.json');
 const Op = require('sequelize').Op;
 const _ = require('lodash');
+const CronJob = require('cron').CronJob;
 
 /**
  * Class that controls the historical data module
@@ -9,26 +10,25 @@ const _ = require('lodash');
 class HistoricalData {
 
     constructor() {
-        setInterval(() => {
+        const cronjob = new CronJob(config.historicalData.intervalCron, () => {
             this.intervalFunc();
-        }, config.historicalData.intervalMs);
+        });
+        cronjob.start();
 
-        console.log(`HistoricalData hook started. Will collect data every ${config.historicalData.intervalMs} ms. Gathering data about players that have connected since ${this._getLastConnectDate().toLocaleDateString()} ${this._getLastConnectDate().toLocaleTimeString()} and data older than ${this._getDeleteDate().toLocaleDateString()} ${this._getDeleteDate().toLocaleTimeString()} will be deleted`);
+        console.log(`HistoricalData hook started. Next data collection: ${cronjob.nextDate()}. Data older than ${this._getDeleteDate().toLocaleDateString()} ${this._getDeleteDate().toLocaleTimeString()} will be deleted`);
     }
 
     /**
      * Gathers data from the RankMe database for players that have been online since the set time difference
      * @returns {Promise}
      */
-    gatherData() {
-        return global.models.Player.findAll({
-            where: {
-                lastconnect: {
-                    [Op.gt]: Math.trunc(this._getLastConnectDate().valueOf() / 1000),
-                }
-            },
+    async gatherData() {
+        // Get players that have connected recently
+        const dataToAdd = await global.models.Player.findAll({
             raw: true,
         });
+
+        return dataToAdd;
     }
 
     /**
@@ -82,15 +82,6 @@ class HistoricalData {
     _getDeleteDate() {
         const deleteDate = new Date(Date.now() - config.historicalData.deleteTimeDifference);
         return deleteDate;
-    }
-
-    /**
-     * Calculates the date a player has to have connected last before being included in historicalData
-     * @returns {Date} 
-     */
-    _getLastConnectDate() {
-        const minimumConnectionDate = new Date(Date.now() - config.historicalData.lastConnectDifferenceBeforeCollectingData);
-        return minimumConnectionDate;
     }
 
 }
