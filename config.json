@@ -1,5 +1,6 @@
 {
     "serverName": "CSGO Server",
+    "logSQL": false,
     "discordBot": {
         "enabled": true,
         "prefix": "!",
@@ -7,9 +8,14 @@
         "minimumKillsBeforeStatsCalc": "20",
         "stats_showMedals": false
     },
-
     "webserver": {
         "enabled": true,
         "port": 8080
+    },
+    "historicalData": {
+        "enabled": true,
+        "intervalCron": "0 0 * * *",
+        "keepDataForMs": 2678400000,
+        "tableName": "historicalData"
     }
 }

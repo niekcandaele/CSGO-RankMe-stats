@@ -15,37 +15,39 @@ class Lookup extends Commando.Command {
                 required: true,
                 type: 'string',
                 prompt: 'Please specify a valid steam ID',
-                validate: (value) => {
-                    let isValid = false;
-                    // Steam2 ID
-                    if (/^STEAM_([0-5]):([0-1]):([0-9]+)$/.test(value)) {
-                        isValid = true;
-                    }
-                    // Steam3 ID
-                    if (/^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]$/.test(value)) {
-                        isValid = true;
-                    }
-                    // SteamID64
-                    if (/([0-9]{17})/.test(value)) {
-                        isValid = true
-                    }
-
-                    // Once we have established the input to look like expected, we check if Steam thinks it's valid aswell
-                    if (isValid) {
-                        let id = new SteamID(value);
-                        if (!id.isValid()) {
-                            isValid = false;
-                        }
-                        // Check if the ID is for a individual (not a gameserver, clan, ...)
-                        if (id.type !== 1) {
-                            isValid = false;
-                        }
-                    }
-
-                    return isValid;
-                }
+                validate: Lookup.validateArgument
             }]
         });
+    }
+
+    validateArgument(value) {
+        let isValid = false;
+        // Steam2 ID
+        if (/^STEAM_([0-5]):([0-1]):([0-9]+)$/.test(value)) {
+            isValid = true;
+        }
+        // Steam3 ID
+        if (/^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]$/.test(value)) {
+            isValid = true;
+        }
+        // SteamID64
+        if (/([0-9]{17})/.test(value)) {
+            isValid = true
+        }
+
+        // Once we have established the input to look like expected, we check if Steam thinks it's valid aswell
+        if (isValid) {
+            let id = new SteamID(value);
+            if (!id.isValid()) {
+                isValid = false;
+            }
+            // Check if the ID is for a individual (not a gameserver, clan, ...)
+            if (id.type !== 1) {
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 
     async run(msg, args) {
@@ -53,10 +55,10 @@ class Lookup extends Commando.Command {
         const id = new SteamID(args.steamId).steam2(true);
         let responseMessage = await msg.channel.send(`Crunching the numbers :nerd:`);
         const rawData = await findDataFromId(this.client, id);
-        if (rawData === null) {
+        if (rawData === null || rawData === undefined) {
             return responseMessage.edit(`Did not find any data for that player. :frowning: `)
         }
-        const data = rawData.dataValues;
+        const data = rawData;
 
 
         const kdr = parseFloat(data.kills / (parseInt(data.deaths) + 1)).toFixed(2);
@@ -90,9 +92,7 @@ class Lookup extends Commando.Command {
 
         const dateEnded = Date.now();
         resultEmbed.setFooter(`Took ${dateEnded - dateStarted} ms to get this data!`);
-        responseMessage.edit('', resultEmbed);
-        return;
-
+        return responseMessage.edit('', resultEmbed);
     }
 
 }
@@ -102,10 +102,11 @@ module.exports = Lookup;
 
 
 async function findDataFromId(client, id) {
-    const foundData = await client.Player.find({
+    const foundData = await global.models.Player.findAll({
         where: {
             steam: id
-        }
+        },
+        raw: true
     });
-    return foundData;
+    return foundData[0];
 }

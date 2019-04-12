@@ -29,7 +29,6 @@ class Top extends Commando.Command {
     }
 
     async run(msg, args) {
-
         if (args.type === "list") {
             return msg.channel.send(`**There are ${this.client.dataFields.length} possible types!**\n\n${this.client.dataFields.join(', ')}`)
         }
@@ -52,7 +51,7 @@ class Top extends Commando.Command {
         });
 
         resultEmbed.setFooter(`Tracking ${totalPlayers} players!`)
-        .setTimestamp()
+            .setTimestamp()
 
         let counter = 1;
         let playerList = new String();
@@ -78,7 +77,7 @@ class Top extends Commando.Command {
 
         resultEmbed.setDescription(playerList);
 
-        await msg.channel.send(resultEmbed);
+        return msg.channel.send(resultEmbed);
 
     }
 
