@@ -1,5 +1,5 @@
 {
-  "name": "rankme-discord",
+  "name": "rankme-stats",
   "version": "1.0.0",
   "description": "Integrates RankMe data in MySQL to Discord",
   "main": "index.js",

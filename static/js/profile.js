@@ -19,7 +19,7 @@ $(document).ready(async () => {
     // GET the profile data
     const response = await getPlayerProfile();
     let historicalData = await getHistoricalData(response.steam);
-    drawHistoricalChart('score', historicalData.map(d => d.score), historicalData.map(d => d.createdAt));
+    // drawHistoricalChart('score', historicalData.map(d => d.score), historicalData.map(d => d.createdAt));
     // Initialize weapon kills data table
     const weaponKillsTable = $("#weapon-kills").DataTable({
         order: [
@@ -35,7 +35,7 @@ $(document).ready(async () => {
             data: 'name',
         }, {
             data: 'data',
-        },]
+        }, ]
     });
 
     // Side wins chart
@@ -247,7 +247,9 @@ function getHistoricalData(steam, startDate, endDate) {
             type: "GET",
             url: "/api/historicalData/",
             data: {
-                steam, startDate, endDate
+                steam,
+                startDate,
+                endDate
             },
             success: function (response) {
                 resolve(response);

@@ -1,132 +1,123 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <% include ./partials/head %>
-        <script src="/static/js/profile.js">
+<head>
+    <% include ./partials/head %>
+    <script src="/static/js/profile.js">
 
 
 
-</script>
-    </head>
+    </script>
+</head>
 
-    <body>
+<body>
 
-        <% include ./partials/header %>
+    <% include ./partials/header %>
 
-        <div class="container text-center">
-            <h1 id="name"></h1>
-            <hr>
-            <div class="row">
-                <div class="col-md-4">
-                    <div>
-                        <strong>Kill/death ratio</strong>
-                        <span id="kdr"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div>
-                        <strong>Headshots</strong>
-                        <span id="hs-percent"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div>
-                        <strong>Accuracy</strong>
-                        <span id="accuracy"></span>
-                    </div>
+    <div class="container text-center">
+        <h1 id="name"></h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <div>
+                    <strong>Kill/death ratio</strong>
+                    <span id="kdr"></span>
                 </div>
             </div>
-
-            <hr>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <canvas height="200" id="hits-chart" width="200"></canvas>
+            <div class="col-md-4">
+                <div>
+                    <strong>Headshots</strong>
+                    <span id="hs-percent"></span>
                 </div>
-                <div class="col-md-4">
-                    <canvas height="200" id="side-wins" width="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <strong>Accuracy</strong>
+                    <span id="accuracy"></span>
                 </div>
-                <div class="col-md-4">
-                    <canvas height="200" id="c4-stats" width="200"></canvas>
-                </div>
+            </div>
+        </div>
 
+        <hr>
+
+        <div class="row">
+            <div class="col-md-4">
+                <canvas height="200" id="hits-chart" width="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <canvas height="200" id="side-wins" width="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <canvas height="200" id="c4-stats" width="200"></canvas>
             </div>
 
-            <hr>
+        </div>
 
-            <div class="row">
+        <hr>
 
-                <div class="col-md-6">
-                    <table class="table" id="weapon-kills">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Kills</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+        <div class="row">
 
-                </div>
-                <div class="col-md-6">
-                    <ul class="list-group">
-                        <li class="list-group-item">Kills:
-                            <span id="kills"></span>
-                        </li>
-                        <li class="list-group-item">Deaths:
-                            <span id="deaths"></span>
-                        </li>
-                        <li class="list-group-item">Assists:
-                            <span id="assists"></span>
-                        </li>
-                        <li class="list-group-item">Suicides:
-                            <span id="suicides"></span>
-                        </li>
-                        <li class="list-group-item">Teamkills:
-                            <span id="tk"></span>
-                        </li>
-                        <li class="list-group-item">MVPs:
-                            <span id="mvp"></span>
-                        </li>
-                        <li class="list-group-item">Shots:
-                            <span id="shots"></span>
-                        </li>
-                        <li class="list-group-item">Hits:
-                            <span id="hits"></span>
-                        </li>
-                        <li class="list-group-item">Total damage:
-                            <span id="damage"></span>
-                        </li>
-                        <li class="list-group-item">Average hits per kill:
-                            <span id="hits-per-kill"></span>
-                        </li>
-                        <li class="list-group-item">Average damage per hit:
-                            <span id="damage-per-hit"></span>
-                        </li>
-                        <li class="list-group-item">Time played:
-                            <span id="time-played"></span>
-                        </li>
-                        <li class="list-group-item">Last connected:
-                            <span id="last-connected"></span>
-                        </li>
-                    </ul>
-                </div>
-
+            <div class="col-md-6">
+                <table class="table" id="weapon-kills">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Kills</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
 
             </div>
-
-            <hr>
-
-            <h2>Historical statistics</h2>
-
-            <div class="row">
-                <canvas height="200" id="historical-chart" width="200"></canvas>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item">Kills:
+                        <span id="kills"></span>
+                    </li>
+                    <li class="list-group-item">Deaths:
+                        <span id="deaths"></span>
+                    </li>
+                    <li class="list-group-item">Assists:
+                        <span id="assists"></span>
+                    </li>
+                    <li class="list-group-item">Suicides:
+                        <span id="suicides"></span>
+                    </li>
+                    <li class="list-group-item">Teamkills:
+                        <span id="tk"></span>
+                    </li>
+                    <li class="list-group-item">MVPs:
+                        <span id="mvp"></span>
+                    </li>
+                    <li class="list-group-item">Shots:
+                        <span id="shots"></span>
+                    </li>
+                    <li class="list-group-item">Hits:
+                        <span id="hits"></span>
+                    </li>
+                    <li class="list-group-item">Total damage:
+                        <span id="damage"></span>
+                    </li>
+                    <li class="list-group-item">Average hits per kill:
+                        <span id="hits-per-kill"></span>
+                    </li>
+                    <li class="list-group-item">Average damage per hit:
+                        <span id="damage-per-hit"></span>
+                    </li>
+                    <li class="list-group-item">Time played:
+                        <span id="time-played"></span>
+                    </li>
+                    <li class="list-group-item">Last connected:
+                        <span id="last-connected"></span>
+                    </li>
+                </ul>
             </div>
 
 
         </div>
-    </body>
+
+    </div>
+</body>
 
 </html>

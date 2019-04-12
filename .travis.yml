@@ -32,8 +32,9 @@ deploy:
   - provider: releases
     api_key: $GITHUB_TOKEN
     file_glob: true
-    file: "7daystodie-api-wrapper-*.tgz"
+    file: "rankme-stats-*.tgz"
     skip_cleanup: true
+    draft: true
     on:
       tags: true
       all_branches: true
