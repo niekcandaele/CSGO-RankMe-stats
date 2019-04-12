@@ -55,10 +55,10 @@ class Lookup extends Commando.Command {
         const id = new SteamID(args.steamId).steam2(true);
         let responseMessage = await msg.channel.send(`Crunching the numbers :nerd:`);
         const rawData = await findDataFromId(this.client, id);
-        if (rawData === null) {
+        if (rawData === null || rawData === undefined) {
             return responseMessage.edit(`Did not find any data for that player. :frowning: `)
         }
-        const data = rawData.dataValues;
+        const data = rawData;
 
 
         const kdr = parseFloat(data.kills / (parseInt(data.deaths) + 1)).toFixed(2);
@@ -102,11 +102,11 @@ module.exports = Lookup;
 
 
 async function findDataFromId(client, id) {
-    const foundData = await client.Player.find({
+    const foundData = await global.models.Player.findAll({
         where: {
             steam: id
-        }
+        },
+        raw: true
     });
-    return foundData;
+    return foundData[0];
 }
-

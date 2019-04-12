@@ -67,12 +67,12 @@ class Stats extends Commando.Command {
         let mostAccuratePlayer = await this.client.Player.findAll({
             attributes: {
                 include: [
-                    [this.client.sequelize.condition(this.client.sequelize.col('hits'), '/', this.client.sequelize.col('shots')), "accuracy"]
+                    [this.client.sequelize.literal("`hits` / (`shots` + 1)"), 'accuracy']
                 ]
             },
             limit: 3,
             order: [
-                [this.client.sequelize.condition(this.client.sequelize.col('hits'), '/', this.client.sequelize.col('shots')), 'DESC']
+                [this.client.sequelize.literal("`hits` / (`shots` + 1)"), 'DESC']
             ],
             where: {
                 kills: {
@@ -84,12 +84,12 @@ class Stats extends Commando.Command {
         let mostHeadshotPercentagePlayer = await this.client.Player.findAll({
             attributes: {
                 include: [
-                    [this.client.sequelize.condition(this.client.sequelize.col('headshots'), '/', this.client.sequelize.col('kills')), "headshotPercent"]
+                    [this.client.sequelize.literal("`headshots` / (`kills` + 1)"), 'headshotPercent']
                 ]
             },
             limit: 3,
             order: [
-                [this.client.sequelize.condition(this.client.sequelize.col('headshots'), '/', this.client.sequelize.col('kills')), 'DESC']
+                [this.client.sequelize.literal("`headshots` / (`kills` + 1)"), 'DESC']
             ],
             where: {
                 kills: {
@@ -101,12 +101,12 @@ class Stats extends Commando.Command {
         let leastHitsPerKill = await this.client.Player.findAll({
             attributes: {
                 include: [
-                    [this.client.sequelize.condition(this.client.sequelize.col('hits'), '/', this.client.sequelize.col('kills')), "efficiency"]
+                    [this.client.sequelize.literal("`hits` / (`kills` + 1)"), 'efficiency']
                 ]
             },
             limit: 3,
             order: [
-                [this.client.sequelize.condition(this.client.sequelize.col('hits'), '/', this.client.sequelize.col('kills'))]
+                [this.client.sequelize.literal("`hits` / (`kills` + 1)")]
             ],
             where: {
                 kills: {
