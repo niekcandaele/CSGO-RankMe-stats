@@ -182,8 +182,8 @@ $(document).ready(async () => {
     }
     drawDataTable(weaponKillsArray, weaponKillsTable);
 
-    sideWinsChart.data.datasets[0].data.push(response.rounds_tr);
-    sideWinsChart.data.datasets[0].data.push(response.rounds_ct);
+    sideWinsChart.data.datasets[0].data.push(response.tr_win);
+    sideWinsChart.data.datasets[0].data.push(response.ct_win);
     sideWinsChart.update();
 
     hitsChart.data.datasets[0].data = [response.head, response.stomach, response.chest, parseInt(response.left_arm) + parseInt(response.right_arm), parseInt(response.left_leg) + parseInt(response.right_leg)];
