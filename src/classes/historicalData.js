@@ -80,7 +80,7 @@ class HistoricalData {
      * @returns {Date}
      */
     _getDeleteDate() {
-        const deleteDate = new Date(Date.now() - config.historicalData.deleteTimeDifference);
+        const deleteDate = new Date(Date.now() - config.historicalData.keepDataForMs);
         return deleteDate;
     }
 

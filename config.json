@@ -14,9 +14,8 @@
     },
     "historicalData": {
         "enabled": true,
-        "intervalCron": "* * * * *",
-        "keepDataForMs": 604800000,
-        "tableName": "historicalData",
-        "deleteTimeDifference": 2678400000
+        "intervalCron": "0 0 * * *",
+        "keepDataForMs": 2678400000,
+        "tableName": "historicalData"
     }
 }
