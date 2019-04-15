@@ -13,11 +13,11 @@ const Op = require('sequelize').Op
  */
 
 /**
-* Express Response Object
-*
-* @external Response
-* @see {@link https://expressjs.com/en/api.html#res Response}
-*/
+ * Express Response Object
+ *
+ * @external Response
+ * @see {@link https://expressjs.com/en/api.html#res Response}
+ */
 
 /**
  * Class to control the webserver & routes
@@ -81,7 +81,7 @@ class Web {
      */
     async ApiOverviewRoute(req, res) {
         const data = await global.models.Player.findAll({
-            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots'],
+            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots', 'steam'],
             limit: 1000,
             order: [
                 ['score', 'DESC']
@@ -92,10 +92,10 @@ class Web {
     }
 
     /**
-    * Returns current stats for a single player
-    * @param {external:Request} req
-    * @param {external:Response} res
-    */
+     * Returns current stats for a single player
+     * @param {external:Request} req
+     * @param {external:Response} res
+     */
     async ApiPlayerInfoRoute(req, res) {
         const data = await global.models.Player.findOne({
             attributes: {
@@ -132,18 +132,23 @@ class Web {
             req.query.startDate = Date.now() - 604800000;
         }
 
+        const whereObj = {
+            [Op.and]: {
+                createdAt: {
+                    [Op.gte]: req.query.startDate,
+                    [Op.lte]: req.query.endDate
+                },
+            }
+        }
+
+        if (req.query.steam !== undefined) {
+            whereObj[Op.and].steam = req.query.steam
+        }
+
         const startDate = new Date(req.query.startDate);
         const endDate = new Date(req.query.endDate);
         const data = await global.models.HistoricalData.findAll({
-            where: {
-                [Op.and]: {
-                    createdAt: {
-                        [Op.gte]: startDate,
-                        [Op.lte]: endDate
-                    },
-                    steam: req.query.steam,
-                }
-            },
+            where: whereObj,
             raw: true,
         });
 

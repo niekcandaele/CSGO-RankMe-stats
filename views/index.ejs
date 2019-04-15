@@ -10,7 +10,41 @@
 
     <% include ./partials/header %>
 
+    <br>
+
     <div class="container ">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div id="score-inc" class="card-body">
+                        <h5 class="card-title">Highest score increase</h5>
+                        <p class="card-text">
+
+                            <canvas id="score-increase-chart"></canvas>
+
+                        </p>
+                        <a href="#" class="btn btn-primary">Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div id="kills-inc" class="card-body">
+                        <h5 class="card-title">Most kills increase</h5>
+                        <p class="card-text">
+
+                            <canvas id="kills-increase-chart"></canvas>
+
+                        </p>
+                        <a href="#" class="btn btn-primary">Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
         <table class="table" id="overview">
             <thead>
                 <tr>

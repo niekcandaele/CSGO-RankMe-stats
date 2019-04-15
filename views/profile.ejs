@@ -113,10 +113,28 @@
                     </li>
                 </ul>
             </div>
-
-
         </div>
 
+        <% if(global.config.historicalData.enabled) { %>
+
+        <hr>
+
+        <h2>Historical data</h2>
+
+        <div class="form-group">
+            <label for="historical-data-field">Data field</label>
+            <select class="form-control" name="historical-data-field" id="historical-data-field">
+                <% global.dataFields.forEach(function(dataField){ %>
+                <option value="<%= dataField %>"><%= dataField %></option>
+                <% }); %>
+
+            </select>
+        </div>
+
+        <div class="row">
+            <canvas id="historical-chart"></canvas>
+        </div>
+        <% } %>
     </div>
 </body>
 
