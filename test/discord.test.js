@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 const chai = require('chai');
 const expect = chai.expect
 const Message = require('discord.js').Message;
@@ -8,6 +10,7 @@ const mock = require('./mock');
 const Stats = require('../src/commands/stats/stats');
 const Top = require('../src/commands/stats/top');
 const Lookup = require('../src/commands/stats/lookup');
+
 
 describe('Discord bot', function () {
     this.timeout(10000);

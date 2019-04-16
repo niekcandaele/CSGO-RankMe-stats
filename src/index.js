@@ -140,8 +140,10 @@ if (cluster.isMaster) {
     logger.info(`Detected ${cpuCount} available CPUs, scaling webserver to ${cpuCount} processes`)
 
     // Create a worker for each CPU
-    for (var i = 0; i < cpuCount; i += 1) {
-        cluster.fork();
+    if (process.env.NODE_ENV !== 'test') {
+        for (var i = 0; i < cpuCount; i += 1) {
+            cluster.fork();
+        }
     }
 
 

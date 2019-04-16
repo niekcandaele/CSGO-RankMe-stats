@@ -1,9 +1,15 @@
+process.env.NODE_ENV = 'test';
+
 const supertest = require('supertest');
 const chai = require('chai');
 const expect = chai.expect
-
 require('../src/index');
 const mock = require('./mock');
+
+const Web = require('../src/classes/web');
+const webserver = new Web();
+
+global.app = webserver.app;
 
 describe('Web API', function () {
     describe('/ - index page', function () {
