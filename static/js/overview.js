@@ -60,9 +60,6 @@ $(document).ready(async () => {
     const sortedByKills = _.orderBy(richData, 'killsDifference', 'desc');
     const sortedByScore = _.orderBy(richData, 'scoreDifference', 'desc');
 
-    $("#score-inc h5").text(`${$("#score-inc h5").text()}: ${sortedByScore[0].name} +${sortedByScore[0].scoreDifference}`)
-    $("#kills-inc h5").text(`${$("#kills-inc h5").text()}: ${sortedByKills[0].name} +${sortedByKills[0].killsDifference}`)
-
     const mostKillsPlayer = _.find(playerData, {
         steam: sortedByKills[0].steamId
     });
@@ -70,12 +67,31 @@ $(document).ready(async () => {
         steam: sortedByScore[0].steamId
     });
 
-    $("#kills-inc a").attr("href", `/player/${mostKillsPlayer.id}`)
-    $("#score-inc a").attr("href", `/player/${mostScorePlayer.id}`)
+    const topKillsNames = [];
+    const topKillsData = [];
+    const topScoreNames = [];
+    const topScoreData = [];
 
+    for (let index = 0; index < 10; index++) {
+        const runnerUpPlayer = _.find(playerData, {
+            steam: sortedByScore[index].steamId
+        });
+        topScoreNames.push(runnerUpPlayer.name)
+        topScoreData.push(groupedData[runnerUpPlayer.steam].map(d => d.score));
+        $("#score-inc ol").append(`<li><a href="/player/${runnerUpPlayer.id}"><span class="tab">${runnerUpPlayer.name}</span></a> +${sortedByScore[index].scoreDifference} </li>`);
+    }
 
-    drawLineChart('Score', groupedData[sortedByScore[0].steamId].map(d => d.score), groupedData[sortedByScore[0].steamId].map(d => d.createdAt), 'score-increase-chart')
-    drawLineChart('Kills', groupedData[sortedByScore[0].steamId].map(d => d.kills), groupedData[sortedByScore[0].steamId].map(d => d.createdAt), 'kills-increase-chart')
+    for (let index = 0; index < 10; index++) {
+        const runnerUpPlayer = _.find(playerData, {
+            steam: sortedByKills[index].steamId
+        });
+        topKillsNames.push(runnerUpPlayer.name)
+        topKillsData.push(groupedData[runnerUpPlayer.steam].map(d => d.kills));
+        $("#kills-inc ol").append(`<li><a href="/player/${runnerUpPlayer.id}"><span class="tab">${runnerUpPlayer.name}</span></a> +${sortedByKills[index].killsDifference} </li>`);
+    }
+
+    drawLineChart(topScoreNames, topScoreData, groupedData[sortedByScore[0].steamId].map(d => d.createdAt), 'score-increase-chart')
+    drawLineChart(topKillsNames, topKillsData, groupedData[sortedByScore[0].steamId].map(d => d.createdAt), 'kills-increase-chart')
 
 });
 

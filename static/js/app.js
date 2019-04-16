@@ -1,3 +1,17 @@
+window.colours = [
+    "rgb(255, 99, 132)",
+    "rgb(255, 159, 64)",
+    "rgb(255, 205, 86)",
+    "rgb(75, 192, 192)",
+    "rgb(25, 241, 252",
+    "rgb(54, 162, 235)",
+    "rgb(153, 102, 255)",
+    "rgb(252, 25, 241)",
+    "rgb(201, 203, 207)",
+    "rgb(0, 255, 76)"
+]
+
+
 function getHistoricalData(steam, startDate, endDate) {
     return new Promise((resolve, reject) => {
         // GET the profile data
@@ -40,7 +54,7 @@ function secondsToHuman(seconds) {
     return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
 }
 
-function drawLineChart(dataTitle, data, dataLabels, elementId) {
+function drawLineChart(dataTitles, dataArr, dataLabels, elementId) {
     var config = {
         type: 'line',
         data: {
@@ -48,12 +62,7 @@ function drawLineChart(dataTitle, data, dataLabels, elementId) {
                 let date = new Date(createdAt);
                 return date.toLocaleDateString();
             }),
-            datasets: [{
-                label: dataTitle,
-                fill: false,
-                backgroundColor: "rgb(54, 162, 235)",
-                data: data
-            }]
+            datasets: []
         },
         options: {
             responsive: true,
@@ -88,6 +97,17 @@ function drawLineChart(dataTitle, data, dataLabels, elementId) {
             }
         }
     };
+
+    for (let index = 0; index < dataTitles.length; index++) {
+        config.data.datasets.push({
+            label: dataTitles[index],
+            fill: false,
+            backgroundColor: window.colours[index],
+            borderColor: window.colours[index],
+            data: dataArr[index]
+        })
+
+    }
 
     let canvas = document.getElementById(elementId);
     if (canvas !== null) {
