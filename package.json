@@ -1,6 +1,6 @@
 {
   "name": "rankme-stats",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "Displays RankMe statistics in multiple forms",
   "main": "index.js",
   "scripts": {
