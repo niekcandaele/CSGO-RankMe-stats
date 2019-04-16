@@ -19,7 +19,7 @@ $(document).ready(async () => {
     // GET the profile data
     const response = await getPlayerProfile();
     let historicalData = await getHistoricalData(response.steam);
-    // drawHistoricalChart('score', historicalData.map(d => d.score), historicalData.map(d => d.createdAt));
+    drawHistoricalChart('score', historicalData.map(d => d.score), historicalData.map(d => d.createdAt));
     // Initialize weapon kills data table
     const weaponKillsTable = $("#weapon-kills").DataTable({
         order: [
@@ -191,6 +191,14 @@ $(document).ready(async () => {
 
     c4Chart.data.datasets[0].data = [response.c4_planted, response.c4_exploded, response.c4_defused];
     c4Chart.update();
+
+    $("#historical-data-field").change(() => {
+        let newField = $("#historical-data-field").val()
+
+        window.historicalData.data.datasets[0].data = historicalData.map(d => d[newField]);
+        window.historicalData.data.datasets[0].label = newField;
+        window.historicalData.update()
+    });
 })
 
 function getIdFromUrl() {
@@ -198,30 +206,9 @@ function getIdFromUrl() {
     return splitPageUrl[splitPageUrl.length - 1];
 }
 
-function drawDataTable(data, table) {
-    table.clear();
-    if (data) {
-        for (const row of data) {
-            table.row.add(row);
-        }
-    }
-    table.draw();
-}
-
 function transparentize(color, opacity) {
     var alpha = opacity === undefined ? 0.5 : 1 - opacity;
     return Color(color).alpha(alpha).rgbString();
-}
-
-function secondsToHuman(seconds) {
-
-    let days = Math.floor(seconds / daysInSeconds);
-    seconds = seconds % daysInSeconds;
-    let hours = Math.floor(seconds / hoursInSeconds);
-    seconds = seconds % hoursInSeconds;
-    let minutes = Math.floor(seconds / minutesInSeconds);
-    seconds = seconds % minutesInSeconds;
-    return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
 }
 
 function getPlayerProfile() {
@@ -240,32 +227,15 @@ function getPlayerProfile() {
     });
 }
 
-function getHistoricalData(steam, startDate, endDate) {
-    return new Promise((resolve, reject) => {
-        // GET the profile data
-        $.ajax({
-            type: "GET",
-            url: "/api/historicalData/",
-            data: {
-                steam,
-                startDate,
-                endDate
-            },
-            success: function (response) {
-                resolve(response);
-            },
-            error: function (xhr, status, error) {
-                reject(error);
-            }
-        });
-    });
-}
 
 function drawHistoricalChart(dataTitle, data, dataLabels) {
     var config = {
         type: 'line',
         data: {
-            labels: dataLabels,
+            labels: dataLabels.map(createdAt => {
+                let date = new Date(createdAt);
+                return date.toLocaleDateString();
+            }),
             datasets: [{
                 label: dataTitle,
                 fill: false,
@@ -275,8 +245,9 @@ function drawHistoricalChart(dataTitle, data, dataLabels) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: true,
             title: {
-                display: true,
+                display: false,
                 text: 'Historical data'
             },
             tooltips: {
@@ -291,14 +262,14 @@ function drawHistoricalChart(dataTitle, data, dataLabels) {
                 xAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
+                        display: false,
                         labelString: 'Month'
                     }
                 }],
                 yAxes: [{
                     display: true,
                     scaleLabel: {
-                        display: true,
+                        display: false,
                         labelString: 'Value'
                     }
                 }]
@@ -306,6 +277,8 @@ function drawHistoricalChart(dataTitle, data, dataLabels) {
         }
     };
 
-    var ctx = document.getElementById('historical-chart').getContext('2d');
-    window.myLine = new Chart(ctx, config);
-}
+    let canvas = document.getElementById('historical-chart');
+    if (canvas !== null) {
+        let ctx = canvas.getContext('2d');
+        window.historicalData = new Chart(ctx, config);
+    }

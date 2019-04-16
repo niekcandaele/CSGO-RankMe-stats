@@ -10,22 +10,75 @@
 
     <% include ./partials/header %>
 
-    <div class="container ">
-        <table class="table" id="overview">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Kill/death ratio</th>
-                    <th>Headshot %</th>
-                    <th>Kills</th>
-                    <th>Deaths</th>
-                </tr>
-            </thead>
-            <tbody>
+    <br>
 
-            </tbody>
-        </table>
+    <div class="container-fluid">
+        <% if(global.config.historicalData.enabled) { %>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card text-center">
+                    <div id="score-inc" class="card-body">
+                        <div class="card-header">
+                            <h2>Score</h2>
+                        </div>
+                        <p class="card-text">
+
+                            <canvas id="score-increase-chart"></canvas>
+
+                        </p>
+                        <ol class="two-columns"></ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card text-center">
+                    <div id="kills-inc" class="card-body">
+                        <div class="card-header">
+                            <h2>Kills</h2>
+                        </div>
+                        <p class="card-text">
+
+                            <canvas id="kills-increase-chart"></canvas>
+
+                        </p>
+                        <ol class="two-columns"></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <% } %>
+
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="card-header">
+                    <h2>Players</h2>
+                </div>
+                <p class="card-text">
+
+                    <table class="table" id="overview">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Kill/death ratio</th>
+                                <th>Headshot %</th>
+                                <th>Kills</th>
+                                <th>Deaths</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+                </p>
+            </div>
+        </div>
+
+
+
 
     </div>
 </body>

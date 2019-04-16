@@ -1,9 +1,12 @@
 const config = require('../../config.json');
 const express = require('express');
 const path = require('path');
-const port = config.webserver.port;
 const _ = require('lodash');
 const Op = require('sequelize').Op
+const morgan = require('morgan');
+const cluster = require('cluster');
+
+const port = config.webserver.port;
 
 /**
  * Express Request Object
@@ -13,11 +16,11 @@ const Op = require('sequelize').Op
  */
 
 /**
-* Express Response Object
-*
-* @external Response
-* @see {@link https://expressjs.com/en/api.html#res Response}
-*/
+ * Express Response Object
+ *
+ * @external Response
+ * @see {@link https://expressjs.com/en/api.html#res Response}
+ */
 
 /**
  * Class to control the webserver & routes
@@ -32,6 +35,11 @@ class Web {
 
         this.app = express();
         this.app.set('view engine', 'ejs');
+        this.app.use(morgan("combined", {
+            stream: {
+                write: (message) => global.logger.info(message)
+            }
+        }));
 
         // Routes
         this.app.get('/', this.indexRoute);
@@ -41,7 +49,11 @@ class Web {
         this.app.get('/api/historicalData', this.getHistoricalDataRoute);
 
         this.app.use('/static', express.static(path.resolve(__dirname, '../../static')));
-        this.app.listen(port, () => console.log(`Webserver listening on port ${port}!`))
+        this.app.listen(port, () => {
+            if (cluster.isMaster) {
+                global.logger.info(`Webserver listening on port ${port}!`)
+            }
+        })
     }
 
     /**
@@ -81,7 +93,7 @@ class Web {
      */
     async ApiOverviewRoute(req, res) {
         const data = await global.models.Player.findAll({
-            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots'],
+            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots', 'steam'],
             limit: 1000,
             order: [
                 ['score', 'DESC']
@@ -92,10 +104,10 @@ class Web {
     }
 
     /**
-    * Returns current stats for a single player
-    * @param {external:Request} req
-    * @param {external:Response} res
-    */
+     * Returns current stats for a single player
+     * @param {external:Request} req
+     * @param {external:Response} res
+     */
     async ApiPlayerInfoRoute(req, res) {
         const data = await global.models.Player.findOne({
             attributes: {
@@ -132,18 +144,23 @@ class Web {
             req.query.startDate = Date.now() - 604800000;
         }
 
+        const whereObj = {
+            [Op.and]: {
+                createdAt: {
+                    [Op.gte]: req.query.startDate,
+                    [Op.lte]: req.query.endDate
+                },
+            }
+        }
+
+        if (req.query.steam !== undefined) {
+            whereObj[Op.and].steam = req.query.steam
+        }
+
         const startDate = new Date(req.query.startDate);
         const endDate = new Date(req.query.endDate);
         const data = await global.models.HistoricalData.findAll({
-            where: {
-                [Op.and]: {
-                    createdAt: {
-                        [Op.gte]: startDate,
-                        [Op.lte]: endDate
-                    },
-                    steam: req.query.steam,
-                }
-            },
+            where: whereObj,
             raw: true,
         });
 
