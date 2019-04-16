@@ -282,3 +282,4 @@ function drawHistoricalChart(dataTitle, data, dataLabels) {
         let ctx = canvas.getContext('2d');
         window.historicalData = new Chart(ctx, config);
     }
+}
