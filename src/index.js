@@ -132,7 +132,6 @@ global.models = Models;
 global.sequelize = sequelize;
 
 
-
 if (cluster.isMaster) {
 
     // Count the machine's CPUs

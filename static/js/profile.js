@@ -192,7 +192,6 @@ $(document).ready(async () => {
     c4Chart.data.datasets[0].data = [response.c4_planted, response.c4_exploded, response.c4_defused];
     c4Chart.update();
 
-
     $("#historical-data-field").change(() => {
         let newField = $("#historical-data-field").val()
 
@@ -283,5 +282,3 @@ function drawHistoricalChart(dataTitle, data, dataLabels) {
         let ctx = canvas.getContext('2d');
         window.historicalData = new Chart(ctx, config);
     }
-
-}

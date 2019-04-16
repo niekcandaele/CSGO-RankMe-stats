@@ -32,6 +32,8 @@ You will need a MySQL database that is storing the statistics, this bot does not
 
 ![Global stats](img/global-stats.png "Global stats") ![Weapon stats](img/top.png "Weapon stats")
 
+![Profile statistics](img/profile-page.png "Profile page")
+
 ## Support
 
 Either [make an issue](https://github.com/niekcandaele/CSGO-RankMe-Discord/issues/new) or [join my discord server](http://catalysm.net/discord).
