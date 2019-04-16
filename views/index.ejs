@@ -16,9 +16,11 @@
         <% if(global.config.historicalData.enabled) { %>
         <div class="row">
             <div class="col-sm-6">
-                <div class="card">
+                <div class="card text-center">
                     <div id="score-inc" class="card-body">
-                        <h5 class="card-title">Score increase</h5>
+                        <div class="card-header">
+                            <h2>Score</h2>
+                        </div>
                         <p class="card-text">
 
                             <canvas id="score-increase-chart"></canvas>
@@ -29,9 +31,11 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="card">
+                <div class="card text-center">
                     <div id="kills-inc" class="card-body">
-                        <h5 class="card-title">Kills increase</h5>
+                        <div class="card-header">
+                            <h2>Kills</h2>
+                        </div>
                         <p class="card-text">
 
                             <canvas id="kills-increase-chart"></canvas>
@@ -45,21 +49,36 @@
 
         <hr>
         <% } %>
-        <table class="table" id="overview">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Kill/death ratio</th>
-                    <th>Headshot %</th>
-                    <th>Kills</th>
-                    <th>Deaths</th>
-                </tr>
-            </thead>
-            <tbody>
 
-            </tbody>
-        </table>
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="card-header">
+                    <h2>Players</h2>
+                </div>
+                <p class="card-text">
+
+                    <table class="table" id="overview">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Kill/death ratio</th>
+                                <th>Headshot %</th>
+                                <th>Kills</th>
+                                <th>Deaths</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+                </p>
+            </div>
+        </div>
+
+
+
 
     </div>
 </body>
