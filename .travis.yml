@@ -22,7 +22,7 @@ after_script: "cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js"
 deploy:
   - provider: pages
     skip_cleanup: true
-    local_dir: docs/
+    local_dir: out/
     github_token: $GITHUB_TOKEN
     on:
       all_branches: true
