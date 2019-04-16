@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cluster = require('cluster');
 const HistoricalDataClass = require('./classes/historicalData');
 const config = require('../config.json');
 
@@ -57,52 +58,72 @@ const Models = {
 global.models = Models;
 global.sequelize = sequelize;
 
-/*
-______ _____ _____ _____ _________________ 
-|  _  \_   _/  ___/  __ \  _  | ___ \  _  \
-| | | | | | \ `--.| /  \/ | | | |_/ / | | |
-| | | | | |  `--. \ |   | | | |    /| | | |
-| |/ / _| |_/\__/ / \__/\ \_/ / |\ \| |/ / 
-|___/  \___/\____/ \____/\___/\_| \_|___/  
-*/
 
-if (config.discordBot.enabled) {
-    const DiscordBot = require('./classes/discordBot');
-    global.discordBot = new DiscordBot();
+
+if (cluster.isMaster) {
+
+    // Count the machine's CPUs
+    var cpuCount = require('os').cpus().length;
+
+    // Create a worker for each CPU
+    for (var i = 0; i < cpuCount; i += 1) {
+        cluster.fork();
+    }
+
+
+
+    /*
+    ______ _____ _____ _____ _________________ 
+    |  _  \_   _/  ___/  __ \  _  | ___ \  _  \
+    | | | | | | \ `--.| /  \/ | | | |_/ / | | |
+    | | | | | |  `--. \ |   | | | |    /| | | |
+    | |/ / _| |_/\__/ / \__/\ \_/ / |\ \| |/ / 
+    |___/  \___/\____/ \____/\___/\_| \_|___/  
+    */
+
+    if (config.discordBot.enabled) {
+        const DiscordBot = require('./classes/discordBot');
+        global.discordBot = new DiscordBot();
+    }
+
+    /*
+      _    _ _     _             _           _   _____        _
+     | |  | (_)   | |           (_)         | | |  __ \      | |
+     | |__| |_ ___| |_ ___  _ __ _  ___ __ _| | | |  | | __ _| |_ __ _
+     |  __  | / __| __/ _ \| '__| |/ __/ _` | | | |  | |/ _` | __/ _` |
+     | |  | | \__ \ || (_) | |  | | (_| (_| | | | |__| | (_| | || (_| |
+     |_|  |_|_|___/\__\___/|_|  |_|\___\__,_|_| |_____/ \__,_|\__\__,_|
+    */
+
+    if (config.historicalData.enabled) {
+        // Start the historicalData class
+        HistoricalData.sync().then(() => {
+            console.log('Synced HistoricalData model');
+            const historicalDataHook = new HistoricalDataClass();
+        })
+    }
+
+    // Code to run if we're in a worker process
+} else {
+
+    /*
+    __          __  _                                  
+    \ \        / / | |                                 
+     \ \  /\  / /__| |__  ___  ___ _ ____   _____ _ __ 
+      \ \/  \/ / _ \ '_ \/ __|/ _ \ '__\ \ / / _ \ '__|
+       \  /\  /  __/ |_) \__ \  __/ |   \ V /  __/ |   
+        \/  \/ \___|_.__/|___/\___|_|    \_/ \___|_|   
+    */
+
+    if (config.webserver.enabled) {
+        const Web = require('./classes/web');
+        const webserver = new Web();
+
+        global.app = webserver.app;
+    }
+
 }
 
-/*
-__          __  _                                  
-\ \        / / | |                                 
- \ \  /\  / /__| |__  ___  ___ _ ____   _____ _ __ 
-  \ \/  \/ / _ \ '_ \/ __|/ _ \ '__\ \ / / _ \ '__|
-   \  /\  /  __/ |_) \__ \  __/ |   \ V /  __/ |   
-    \/  \/ \___|_.__/|___/\___|_|    \_/ \___|_|   
-*/
-
-if (config.webserver.enabled) {
-    const Web = require('./classes/web');
-    const webserver = new Web();
-
-    global.app = webserver.app;
-}
-
-/*
-  _    _ _     _             _           _   _____        _
- | |  | (_)   | |           (_)         | | |  __ \      | |
- | |__| |_ ___| |_ ___  _ __ _  ___ __ _| | | |  | | __ _| |_ __ _
- |  __  | / __| __/ _ \| '__| |/ __/ _` | | | |  | |/ _` | __/ _` |
- | |  | | \__ \ || (_) | |  | | (_| (_| | | | |__| | (_| | || (_| |
- |_|  |_|_|___/\__\___/|_|  |_|\___\__,_|_| |_____/ \__,_|\__\__,_|
-*/
-
-if (config.historicalData.enabled) {
-    // Start the historicalData class
-    HistoricalData.sync().then(() => {
-        console.log('Synced HistoricalData model');
-        const historicalDataHook = new HistoricalDataClass();
-    })
-}
 
 process.on('unhandledRejection', (reason, p) => {
     console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
