@@ -1,4 +1,3 @@
-
 process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const expect = chai.expect
@@ -12,7 +11,7 @@ const Top = require('../src/commands/stats/top');
 const Lookup = require('../src/commands/stats/lookup');
 
 describe('Discord bot', function () {
-    this.timeout(10000);
+    this.timeout(30000);
     describe('Stats command', function () {
 
         before(async () => {
