@@ -15,7 +15,7 @@ class HistoricalData {
         });
         cronjob.start();
 
-        console.log(`HistoricalData hook started. Next data collection: ${cronjob.nextDate()}. Data older than ${this._getDeleteDate().toLocaleDateString()} ${this._getDeleteDate().toLocaleTimeString()} will be deleted`);
+        global.logger.info(`HistoricalData hook started. Next data collection: ${cronjob.nextDate()}. Data older than ${this._getDeleteDate().toLocaleDateString()} ${this._getDeleteDate().toLocaleTimeString()} will be deleted`);
     }
 
     /**
@@ -69,9 +69,9 @@ class HistoricalData {
             const newData = await this.gatherData();
             await this.saveDataToDatabase(newData);
             const deletedInfo = await this.deleteOldData();
-            console.log(`Class - HistoricalData : Completed a cycle - ${newData.length} new records and ${deletedInfo} records deleted`)
+            global.logger.info(`Class - HistoricalData : Completed a cycle - ${newData.length} new records and ${deletedInfo} records deleted`)
         } catch (error) {
-            console.log(error)
+            global.logger.info(error)
         }
     }
 

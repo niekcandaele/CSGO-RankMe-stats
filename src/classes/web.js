@@ -1,10 +1,12 @@
 const config = require('../../config.json');
 const express = require('express');
 const path = require('path');
-const port = config.webserver.port;
 const _ = require('lodash');
 const Op = require('sequelize').Op
+const morgan = require('morgan');
+const cluster = require('cluster');
 
+const port = config.webserver.port;
 /**
  * Express Request Object
  * 
@@ -32,6 +34,11 @@ class Web {
 
         this.app = express();
         this.app.set('view engine', 'ejs');
+        this.app.use(morgan("combined", {
+            stream: {
+                write: (message) => global.logger.info(message)
+            }
+        }));
 
         // Routes
         this.app.get('/', this.indexRoute);
@@ -41,7 +48,11 @@ class Web {
         this.app.get('/api/historicalData', this.getHistoricalDataRoute);
 
         this.app.use('/static', express.static(path.resolve(__dirname, '../../static')));
-        this.app.listen(port, () => console.log(`Webserver listening on port ${port}!`))
+        this.app.listen(port, () => {
+            if (cluster.isMaster) {
+                global.logger.info(`Webserver listening on port ${port}!`)
+            }
+        })
     }
 
     /**

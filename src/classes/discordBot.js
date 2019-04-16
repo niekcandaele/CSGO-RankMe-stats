@@ -17,7 +17,7 @@ class DiscordBot {
         // Guild settings persistance
         this.client.setProvider(
             sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
-        ).catch(e => console.log(e));
+        ).catch(e => global.logger.error(e));
 
         this.client.dataFields = global.dataFields;
 
@@ -36,15 +36,15 @@ class DiscordBot {
      */
     _initListeners() {
         this.client.on('ready', () => {
-            console.log(`Connected to Discord as ${this.client.user.tag}!`);
+            global.logger.info(`Connected to Discord as ${this.client.user.tag}!`);
         });
 
         this.client.on('commandRun', (command, promise, message) => {
-            console.log(`Command ${command.name} run by ${message.author.tag}`)
+            global.logger.info(`Command ${command.name} run by ${message.author.tag}`)
         });
 
         this.client.on('error', e => {
-            console.log(e)
+            global.logger.info(e)
         });
     }
 
