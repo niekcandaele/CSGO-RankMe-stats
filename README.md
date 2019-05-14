@@ -4,6 +4,7 @@
 [![Coveralls github](https://img.shields.io/coveralls/github/niekcandaele/CSGO-RankMe-stats.svg?style=flat-square)](https://coveralls.io/github/niekcandaele/CSGO-RankMe-stats)
 [![Discord](https://img.shields.io/discord/336821518250147850.svg?color=%237289da&label=Discord&style=flat-square)](http://catalysm.net/discord)
 [![GitHub release](https://img.shields.io/github/release/niekcandaele/CSGO-RankMe-stats.svg?style=flat-square)](https://github.com/niekcandaele/CSGO-RankMe-stats/releases)
+![GitHub All Releases](https://img.shields.io/github/downloads/niekcandaele/CSGO-RankMe-stats/total.svg?style=flat-square)
 
 [Demo](https://retakes.catalysm.net/)
 
