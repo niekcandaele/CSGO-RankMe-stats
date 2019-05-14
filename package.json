@@ -1,14 +1,15 @@
 {
   "name": "rankme-stats",
-  "version": "1.0.0",
-  "description": "Integrates RankMe data in MySQL to Discord",
+  "version": "1.2.4",
+  "description": "Displays RankMe statistics in multiple forms",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha test/**/*.test.js --exit",
     "docs": "jsdoc src -r -t node_modules/docdash",
-    "test:cover": "nyc --report-dir ./coverage --reporter=lcov --reporter=text-summary node_modules/mocha/bin/_mocha --exit"
+    "test:cover": "nyc --report-dir ./coverage --reporter=lcov --reporter=text-summary node_modules/mocha/bin/_mocha --exit",
+    "start": "node src/index.js"
   },
-  "author": "",
+  "author": "Catalysm",
   "license": "ISC",
   "dependencies": {
     "cron": "^1.7.0",
