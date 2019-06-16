@@ -5,6 +5,7 @@ const winston = require('winston');
 const path = require('path');
 const fs = require('fs');
 const figlet = require('figlet')
+const _ = require('lodash');
 
 const HistoricalDataClass = require('./classes/historicalData');
 
@@ -157,8 +158,12 @@ if (cluster.isMaster) {
     */
 
     if (config.discordBot.enabled) {
-        const DiscordBot = require('./classes/discordBot');
-        global.discordBot = new DiscordBot();
+        if (_.isEmpty(process.env.DISCORD_TOKEN)) {
+            logger.error("You must provide a bot token when you enable the Discord bot module. Disabling for now...");
+        } else {
+            const DiscordBot = require('./classes/discordBot');
+            global.discordBot = new DiscordBot();
+        }
     }
 
     /*
@@ -212,6 +217,6 @@ if (cluster.isMaster) {
 
 
 process.on('unhandledRejection', (reason, p) => {
-    global.logger.info('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    global.logger.info(`Unhandled rejection - ${reason}`);
     process.exit(1);
 });
