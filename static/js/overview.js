@@ -27,6 +27,12 @@ $(document).ready(async () => {
             },
             {
                 data: 'deaths'
+            }, {
+                render: function (data, type, row, meta) {
+                    let accuracy = (row.hits / (parseInt(row.shots) + 1) * 100);
+                    accuracy = accuracy.toFixed(0);
+                    return accuracy + " %";
+                }
             }
         ]
     });

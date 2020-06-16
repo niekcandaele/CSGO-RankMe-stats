@@ -93,7 +93,7 @@ class Web {
      */
     async ApiOverviewRoute(req, res) {
         const data = await global.models.Player.findAll({
-            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots', 'steam'],
+            attributes: ['id', 'name', 'score', 'kills', 'deaths', 'headshots', 'steam', 'hits', 'shots' ],
             limit: 1000,
             order: [
                 ['score', 'DESC']
