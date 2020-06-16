@@ -22,7 +22,7 @@
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.1",
-    "sequelize": "5.3.3",
+    "sequelize": "5.15.1",
     "sqlite": "^3.0.0",
     "steamid": "^1.1.0",
     "winston": "^3.2.1"
