@@ -11,7 +11,7 @@ jobs:
         node-version: [12.x, 14.x]
 
     services:
-      mysql:
+      mariadb:
         image: mariadb
         env:
           MYSQL_DATABASE: "csgo-rankme"
@@ -43,7 +43,7 @@ jobs:
           CI: true
           MYSQL_DB: "csgo-rankme"
           MYSQL_TABLE: rankme
-          MYSQL_HOST: mysql
+          MYSQL_HOST: mariadb
           MYSQL_PASSWORD: mysecretpasswordissosecure
           MYSQL_USER: "csgo-rankme"
           TEST_DISCORD_CHANNEL: ${{secrets.TEST_DISCORD_CHANNEL}}
