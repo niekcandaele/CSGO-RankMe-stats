@@ -43,7 +43,7 @@ jobs:
           CI: true
           MYSQL_DB: "csgo-rankme"
           MYSQL_TABLE: rankme
-          MYSQL_HOST: mariadb
+          MYSQL_HOST: 127.0.0.1
           MYSQL_PASSWORD: mysecretpasswordissosecure
           MYSQL_USER: "csgo-rankme"
           TEST_DISCORD_CHANNEL: ${{secrets.TEST_DISCORD_CHANNEL}}
