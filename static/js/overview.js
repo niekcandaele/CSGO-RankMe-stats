@@ -72,7 +72,7 @@ $(document).ready(async () => {
     const topScoreNames = [];
     const topScoreData = [];
 
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < Math.min(10, sortedByScore.length); index++) {
         const runnerUpPlayer = _.find(playerData, {
             steam: sortedByScore[index].steamId
         });
@@ -81,7 +81,7 @@ $(document).ready(async () => {
         $("#score-inc ol").append(`<li><a href="/player/${runnerUpPlayer.id}"><span class="tab">${runnerUpPlayer.name}</span></a> +${sortedByScore[index].scoreDifference} </li>`);
     }
 
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < Math.min(10, sortedByKills.length); index++) {
         const runnerUpPlayer = _.find(playerData, {
             steam: sortedByKills[index].steamId
         });
