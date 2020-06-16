@@ -46,6 +46,7 @@ jobs:
           MYSQL_HOST: 127.0.0.1
           MYSQL_PASSWORD: mysecretpasswordissosecure
           MYSQL_USER: "csgo-rankme"
+          MYSQL_PORT: 3306
           TEST_DISCORD_CHANNEL: ${{secrets.TEST_DISCORD_CHANNEL}}
           DISCORD_TOKEN: ${{secrets.DISCORD_TOKEN}}
       - uses: codecov/codecov-action@v1
