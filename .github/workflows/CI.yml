@@ -19,6 +19,7 @@ jobs:
           MYSQL_PASSWORD: "mysecretpasswordissosecure"
         ports:
           - 3306:3306
+        options: --health-cmd='mysqladmin ping
 
     steps:
       - uses: actions/checkout@v2
