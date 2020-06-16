@@ -1,0 +1,52 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    services:
+      mariadb:
+        image: mariadb
+        env:
+          MYSQL_DATABASE: "csgo-rankme"
+          MYSQL_USER: "csgo-rankme"
+          MYSQL_PASSWORD: "mysecretpasswordissosecure"
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache Node.js modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - run: npm ci
+      #      - run: npm run lint
+      - run: npm test
+        env:
+          CI: true
+          MYSQL_DB: "csgo-rankme"
+          MYSQL_TABLE: rankme
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_PASSWORD: mysecretpasswordissosecure
+          MYSQL_USER: "csgo-rankme"
+          MYSQL_PORT: 3306
+          TEST_DISCORD_CHANNEL: ${{secrets.TEST_DISCORD_CHANNEL}}
+          DISCORD_TOKEN: ${{secrets.DISCORD_TOKEN}}
+      - uses: codecov/codecov-action@v1
