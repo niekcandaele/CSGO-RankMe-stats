@@ -17,6 +17,7 @@ jobs:
           MYSQL_DATABASE: "csgo-rankme"
           MYSQL_USER: "csgo-rankme"
           MYSQL_PASSWORD: "mysecretpasswordissosecure"
+          MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
