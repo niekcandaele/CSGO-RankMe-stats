@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  rankme:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config.json:/usr/src/app/config.json
+    environment:
+      MYSQL_DB: "csgo-rankme"
+      MYSQL_TABLE: rankme
+      MYSQL_HOST: db
+      MYSQL_PASSWORD: mysecretpasswordissosecure
+      MYSQL_USER: "csgo-rankme"
+      DISCORD_TOKEN:
+    restart: unless-stopped
+  db:
+    image: mariadb
+    volumes:
+      - ./db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: "csgo-rankme"
+      MYSQL_USER: "csgo-rankme"
+      MYSQL_PASSWORD: "mysecretpasswordissosecure"
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+    restart: unless-stopped
